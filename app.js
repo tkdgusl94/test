@@ -2,7 +2,15 @@ var express = require('express')
 var app = express()
 var bodyParser = require('body-parser') // npm install body-parser --save 바디파서는 post할때 받기 위해서 입력한 값을 받기 위해 사용
 var cors = require('cors') // npm install cors --save, localhost랑 127.0.0.1를 같게 해주는 모듈
+var mysql = require('mysql')
 
+var connection = mysql.createConnection({
+    host: 'localhost',
+    post: 3306,
+    user: 'root',
+    password: 'qlrvka94!',
+    database: 'test'
+})
 app.use(cors())
 app.listen(3000, function() {
     console.log("start, express server on port 3000");
