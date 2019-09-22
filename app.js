@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
     database: 'test'
 })
 
-connection.connect()
+connection.connect() //<ALTER USER ‘root’@’localhost’ IDENTIFIED WITH mysql_native_password BY ‘사용할패스워드’> mysql에 들어가서 입력하기.
 
 app.use(cors())
 app.listen(3000, function() {
@@ -40,7 +40,20 @@ app.post('/email_post', function(req, res) {
 });
 
 app.post('/ajax_send_email', function(req, res) {
-    console.log(req.body.email);
-    var responseData = { 'result': 'ok', 'email': req.body.email };
-    res.json(responseData);
+    //console.log(req.body.email);
+    //var responseData = { 'result': 'ok', 'email': req.body.email };
+    var email = req.body.email;
+    var responseData = {};
+
+    var query = connection.query('select name from user where email = "' + email + '"', function(err, rows) {
+        if (err) throw err;
+        if (rows[0]) {
+            responseData.result = "ok";
+            responseData.name = rows[0].name;
+        } else {
+            responseData.result = "none";
+            responseData.name = "";
+        }
+        res.json(responseData)
+    })
 });
