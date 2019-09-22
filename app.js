@@ -11,6 +11,9 @@ var connection = mysql.createConnection({
     password: 'qlrvka94!',
     database: 'test'
 })
+
+connection.connect()
+
 app.use(cors())
 app.listen(3000, function() {
     console.log("start, express server on port 3000");
