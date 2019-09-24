@@ -1,8 +1,6 @@
 var express = require('express')
 var app = express()
-    //var bodyParser = require('body-parser') // npm install body-parser --save 바디파서는 post할때 받기 위해서 입력한 값을 받기 위해 사용
 var cors = require('cors') // npm install cors --save, localhost랑 127.0.0.1를 같게 해주는 모듈
-var mysql = require('mysql')
 var main = require('./router/main')
 var email = require('./router/email')
 
@@ -10,43 +8,15 @@ app.listen(3000, function() {
     console.log("start, express server on port 3000");
 });
 
-var connection = mysql.createConnection({
-    host: 'localhost',
-    post: 3306,
-    user: 'root',
-    password: 'qlrvka94!',
-    database: 'test'
-})
-connection.connect() //<ALTER USER ‘root’@’localhost’ IDENTIFIED WITH mysql_native_password BY ‘사용할패스워드’> mysql에 들어가서 입력하기.
-
 app.use(express.static('public')) // public 폴더를 static으로 사용하기 위함. public 안에 있는 main.html 파일을 url에서 불러서 호출 가능함.
-
 app.use(cors())
+
 app.use('/main', main)
 app.use('/email', email)
 
-//app.use(bodyParser.json()) // body-parser를 json 형태로 받기 위함.
-//app.use(bodyParser.urlencoded({ extended: true }))
 app.set('view engine', 'ejs') // npm install ejs --save
 
 app.get('/', function(req, res) {
     console.log('test');
     res.sendFile(__dirname + '/public/main.html')
-});
-
-app.post('/ajax_send_email', function(req, res) {
-    var email = req.body.email;
-    var responseData = {};
-
-    var query = connection.query('select name from user where email = "' + email + '"', function(err, rows) {
-        if (err) throw err;
-        if (rows[0]) {
-            responseData.result = "ok";
-            responseData.name = rows[0].name;
-        } else {
-            responseData.result = "none";
-            responseData.name = "";
-        }
-        res.json(responseData)
-    })
 });
