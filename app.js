@@ -2,8 +2,11 @@ var express = require('express')
 var app = express()
 var cors = require('cors') // npm install cors --save, localhost랑 127.0.0.1를 같게 해주는 모듈
 var bodyParser = require('body-parser') // npm install body-parser --save 바디파서는 post할때 받기 위해서 입력한 값을 받기 위해 사용
-
 var router = require('./router/index')
+var passport = require('passport')
+var LocalStrategy = require('passport-local').Strategy
+var session = require('express-session')
+var flash = require('connect-flash')
 
 app.listen(3000, function() {
     console.log("start, express server on port 3000");
