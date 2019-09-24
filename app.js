@@ -3,7 +3,7 @@ var app = express()
 var cors = require('cors') // npm install cors --save, localhost랑 127.0.0.1를 같게 해주는 모듈
 var bodyParser = require('body-parser') // npm install body-parser --save 바디파서는 post할때 받기 위해서 입력한 값을 받기 위해 사용
 var router = require('./router/index')
-var passport = require('passport')
+var passport = require('passport') // npm install passport passport-local express-session connect-flash --save-dev
 var LocalStrategy = require('passport-local').Strategy
 var session = require('express-session')
 var flash = require('connect-flash')
@@ -17,7 +17,15 @@ app.use(express.static('public')) // public 폴더를 static으로 사용하기 
 app.use(bodyParser.json()) // body-parser를 json 형태로 받기 위함.
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use(cors())
-app.use(router)
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(flash())
 
+app.use(cors())
 app.set('view engine', 'ejs') // npm install ejs --save
+app.use(router)
