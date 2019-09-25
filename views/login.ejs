@@ -37,8 +37,11 @@
             xhr.addEventListener('load', function() {
                 var result = JSON.parse(xhr.responseText);
                 var resultDiv = document.querySelector(".result");
-                if (result.email) resultDiv.innerHTML = "welcome, " + result.email + "!!"
-                else resultDiv.innerHTML = result;
+
+                if (result.email) {
+                    window.location.href = "/main";
+                    //resultDiv.innerHTML = "welcome, " + result.email + "!!"
+                } else resultDiv.innerHTML = result;
             });
         }
     </script>
